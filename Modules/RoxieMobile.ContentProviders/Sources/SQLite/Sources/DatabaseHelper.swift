@@ -170,7 +170,7 @@ public class DatabaseHelper
 
         // Validate database name
         if let dstPath = makeDatabasePath(databaseName: databaseName), dstPath.roxie_fileExists {
-            name = dstPath.path
+            name = dstPath.absoluteString
         }
         else if (name != Inner.InMemoryDatabase) {
             name = nil
@@ -292,7 +292,7 @@ public class DatabaseHelper
                 // Unpack database template from the assets
                 if let tmpPath = unpackDatabaseTemplate(databaseName: databaseName!, assetPath: path!), tmpPath.roxie_fileExists
                 {
-                    let path = tmpPath.path
+                    let path = tmpPath.absoluteString
                     
                     var dbQueueUnpacked: DatabaseQueue? = createDatabaseObject(path: path, readonly: false)
                     
@@ -304,7 +304,7 @@ public class DatabaseHelper
                             // FMDB with SQLCipher Tutorial
                             // @link http://www.guilmo.com/fmdb-with-sqlcipher-tutorial/
 
-                            execute(dbQueue: dbQueueUnpacked, query: "ATTACH DATABASE '\(dstPath.path)' AS `encrypted` KEY '\(key.toHexString())';")
+                            execute(dbQueue: dbQueueUnpacked, query: "ATTACH DATABASE '\(dstPath.absoluteString)' AS `encrypted` KEY '\(key.toHexString())';")
                             execute(dbQueue: dbQueueUnpacked, query: "SELECT sqlcipher_export('encrypted');")
                             execute(dbQueue: dbQueueUnpacked, query: "DETACH DATABASE `encrypted`;")
                         }
